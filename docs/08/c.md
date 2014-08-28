@@ -1,5 +1,5 @@
-
-### Composing monadic functions
+[transformers]: http://eed3si9n.com/learning-scalaz/Monad+transformers.html
+### Composing monadic functions with Kleisli
 
 LYAHFGG:
 
@@ -79,3 +79,5 @@ res76: scalaz.Id.Id[Int] = 19
 ```
 
 The fact that we are using function as a monad becomes somewhat clearer here.
+
+See [Monad Transformers][transformers] on how to use Kleisli and ReaderT to stack monads - for example to wrap an Option in a Reader.
