@@ -1,1 +1,96 @@
-this is some text
+[endo_blog]: http://debasishg.blogspot.com.au/2013/06/endo-is-new-fluent-api.html
+### Endomorphisms
+An endomorphism is simply a function that takes an argument of type T and returns the same type T. Scalaz has a type for this Endo defined as:
+```scala
+final case class Endo[A](run: A => A) {
+  final def apply(a: A): A = run(a)
+
+  /** Do `other`, than call myself with its result. */
+  final def compose(other: Endo[A]): Endo[A] = Endo.endo(run compose other.run)
+
+  /** Call `other` with my result. */
+  final def andThen(other: Endo[A]): Endo[A] = other compose this
+}
+```
+
+So, when we have functions that take a parameter of a certain type and return the same type, we can abstract these as an Endo.
+Endo is also a Monoid with mappend as compose and mzero and an identity function.
+
+Let's check it out in Scala (note how we can append the endo's together: journalize |+| enrich |+| addValueDate |+| validate):
+
+```scala
+package scalaz.endo.stuff
+
+/**
+ * Another example of composing operations using a fluent api provided by endo and monoid.
+ * This time we define a security which must go through a number of transformations for 
+ * a trade: validate, addValueDate, enrich and journalize.
+ * As the transformations take a Trade and return a Trade they can be modelled with an
+ * endo and we can use monoidal accumulation.
+ */
+
+import scalaz._
+import Scalaz._
+import java.util.{Date, Calendar}
+
+// these are for testing out the Play json pretty print
+import play.api.libs.json._
+import play.api.libs.functional._
+// this one is an extension to play-json to handle class hierarchies from a sealed trait
+// https://github.com/julienrf/play-json-variants
+import julienrf.variants.Variants
+
+
+object EndoFluent {
+  sealed trait Instrument
+  case class Security(isin: String, name: String) extends Instrument
+
+  case class Trade(refNo: String, tradeDate: Date, valueDate: Option[Date] = None, 
+    ins: Instrument, principal: BigDecimal, net: Option[BigDecimal] = None, status: TradeStatus = CREATED)
+  
+  sealed trait TradeStatus
+  case object CREATED extends TradeStatus
+  case object FINALIZED extends TradeStatus
+  case object VALUE_DATE_ADDED extends TradeStatus
+  case object ENRICHED extends TradeStatus
+  case object VALIDATED extends TradeStatus
+
+  type TradeLifecycle = Endo[Trade]
+
+  // validate the trade: business logic elided
+  def validate: TradeLifecycle = 
+    ((t: Trade) => t.copy(status = VALIDATED)).endo
+
+  // add value date to the trade (for settlement)
+  def addValueDate: TradeLifecycle = 
+    ((t: Trade) => t.copy(valueDate = Some(t.tradeDate), status = VALUE_DATE_ADDED)).endo
+
+  // enrich the trade: add taxes and compute net value: business logic elided
+  def enrich: TradeLifecycle = 
+    ((t: Trade) => t.copy(net = Some(t.principal + 100), status = ENRICHED)).endo
+
+  // journalize the trade into book: business logic elided
+  def journalize: TradeLifecycle = 
+    ((t: Trade) => t.copy(status = FINALIZED)).endo
+
+    
+  def doTrade(t: Trade) =
+    (journalize |+| enrich |+| addValueDate |+| validate).run(t) //apply(t)
+    
+    
+  def main(args: Array[String]): Unit = {
+    val now = Calendar.getInstance().getTime()
+    val t = doTrade(Trade("12345", now, None, Security("GOOG", "Google Inc."), 1000))
+    println(t)
+    
+    
+    // Print out the trade in json format - easier to visualise
+    implicit val instrumentFormat: Format[Instrument] = Variants.format[Instrument]
+    implicit val tradeStatusFormat: Format[TradeStatus] = Variants.format[TradeStatus]
+    implicit val tradeFormat = Json.format[Trade]
+    println
+    println(Json.prettyPrint(Json.toJson(t)))
+  }
+}
+```
+The above example is based on a great blog post: [Endo is the new fluent API][endo_blog] 
