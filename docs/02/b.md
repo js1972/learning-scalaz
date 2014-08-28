@@ -1,4 +1,4 @@
-
+[builder]: http://eed3si9n.com/learning-scalaz/Applicative+Builder.html
 ### Applicative
 
 LYAHFGG:
@@ -138,6 +138,8 @@ res18: Option[Int] = Some(8)
 ```
 
 We will use `|@|` style for now.
+
+See [day 7][builder] for more on Applicative Builder (|@|).
 
 ### Lists as Apply
 
