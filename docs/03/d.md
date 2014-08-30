@@ -1,6 +1,7 @@
 [endo_blog]: http://debasishg.blogspot.com.au/2013/06/endo-is-new-fluent-api.html
 ### Endomorphisms
 An endomorphism is simply a function that takes an argument of type T and returns the same type T. Scalaz has a type for this Endo defined as:
+
 ```scala
 final case class Endo[A](run: A => A) {
   final def apply(a: A): A = run(a)
