@@ -1,12 +1,12 @@
 
 ## Initial and terminal objects
 
-Let's look at something abstract. When a definition relies only on category theoretical notion (objects and arrows), it often reduces down to a form "given a diagram abc, there exists a unique x that makes another diagram xyz commute." Commutative in this case mean that all the arrows compose correctly.Those defenitions are called *universal property* or *universal mapping property* (UMP).
+Let's look at something abstract. When a definition relies only on category theoretical notion (objects and arrows), it often reduces down to a form "given a diagram abc, there exists a unique x that makes another diagram xyz commute." Commutative in this case mean that all the arrows compose correctly.Those definitions are called *universal property* or *universal mapping property* (UMP).
 
 Some of the notions have a counterpart in set theory, but it's more powerful because of its abtract nature. Consider making the empty set and the one-element sets in **Sets** abstract.
 
 > **Definition 2.9.** In any category **C**, an object
-> 
+>
 > - 0 is *initial* if for any object *C* there is a unique morphism<br> 0 => C
 > - 1 is *terminal* if for any object *C* there is a unique morphism<br> C => 1
 

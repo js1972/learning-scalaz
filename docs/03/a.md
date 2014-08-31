@@ -10,7 +10,7 @@ One section I should've covered yesterday from [Making Our Own Types and Typecla
 
 [Learn You a Haskell For Great Good][moott] says:
 
-> Types are little labels that values carry so that we can reason about the values. But types have their own little labels, called kinds. A kind is more or less the type of a type. 
+> Types are little labels that values carry so that we can reason about the values. But types have their own little labels, called kinds. A kind is more or less the type of a type.
 > ...
 > What are kinds and what are they good for? Well, let's examine the kind of a type by using the :k command in GHCI.
 
@@ -57,7 +57,7 @@ res0: String = Int's kind is *.
 This is a proper type.
 
 scala> kind[Option.type]
-res1: String = Option's kind is * -> *. 
+res1: String = Option's kind is * -> *.
 This is a type constructor: a 1st-order-kinded type.
 
 scala> kind[Either.type]
@@ -77,7 +77,7 @@ From the top. `Int` and every other types that you can make a value out of is ca
 
 A first-order value, or a value constructor like `(_: Int) + 3`, is normally called a function. Similarly, a first-order-kinded type is a type that accepts other types to create a proper type. This is normally called a type constructor. `Option`, `Either`, and `Equal` are all first-order-kinded. To denote that these accept other types, we use curried notation like `* -> *` and `* -> * -> *`. Note, `Option[Int]` is `*`; `Option` is `* -> *`.
 
-A higher-order value like `(f: Int => Int, list: List[Int]) => list map {f}`, a function that accepts other functions is normally called higher-order function. Similarly, a higher-kinded type is a type constructor that accepts other type constructors. It probably should be called a higher-kinded type constructor but the name is not used. These are denoted as `(* -> *) -> *`. 
+A higher-order value like `(f: Int => Int, list: List[Int]) => list map {f}`, a function that accepts other functions is normally called higher-order function. Similarly, a higher-kinded type is a type constructor that accepts other type constructors. It probably should be called a higher-kinded type constructor but the name is not used. These are denoted as `(* -> *) -> *`.
 
 In case of Scalaz 7, `Equal` and others have the kind `* -> *` while `Functor` and all its derivatives have the kind `(* -> *) -> *`. You wouldn't worry about this if you are using injected operators like:
 
@@ -98,7 +98,7 @@ scala> Functor[List].lift((_: Int) + 2)
 res13: List[Int] => List[Int] = <function1>
 ```
 
-In [the cheat sheet](http://eed3si9n.com/scalaz-cheat-sheet) I started I originally had type parameters for `Equal` written as `Equal[F]`, which is the same as Scalaz 7's source code. Adam Rosien pointed out to me that it should be `Equal[A]`. 
+In [the cheat sheet]($linkBase$/scalaz-cheat-sheet) I started I originally had type parameters for `Equal` written as `Equal[F]`, which is the same as Scalaz 7's source code. Adam Rosien pointed out to me that it should be `Equal[A]`. 
 
 <blockquote class="twitter-tweet"><p>@<a href="https://twitter.com/eed3si9n">eed3si9n</a> love the scalaz cheat sheet start, but using the type param F usually means Functor, what about A instead?</p>&mdash; Adam Rosien (@arosien) <a href="https://twitter.com/arosien/status/241990437269815296">September 1, 2012</a></blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>

@@ -1,4 +1,4 @@
-[transformers]: http://eed3si9n.com/learning-scalaz/Monad+transformers.html
+[transformers]: $linkBase$/learning-scalaz/Monad+transformers.html
 ### Composing monadic functions with Kleisli
 
 LYAHFGG:

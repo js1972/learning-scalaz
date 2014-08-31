@@ -7,7 +7,7 @@
 
 An arrow is the term used in category theory as an abstract notion of thing that behaves like a function. In Scalaz, these are `Function1[A, B]`, `PartialFunction[A, B]`, `Kleisli[F[_], A, B]`, and `CoKleisli[F[_], A, B]`. `Arrow` abstracts them all similar to the way other typeclasses abtracts containers.
 
-Here is the typeclass contract for [`Arrow`](https://github.com/eed3si9n/scalaz/blob/scalaz-seven/core/src/main/scala/scalaz/Arrow.scala):
+Here is the typeclass contract for [`Arrow`]($scalazBaseUrl$/core/src/main/scala/scalaz/Arrow.scala):
 
 ```scala
 trait Arrow[=>:[_, _]] extends Category[=>:] { self =>

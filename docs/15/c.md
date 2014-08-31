@@ -23,7 +23,7 @@ scala> List(1, 2, 3) traverseU h
 res2: (Int, List[List[Int]]) = (9,List(List(1, 5), List(2, 5), List(3, 5)))
 ```
 
-Running `f` and `g` is working fine. The problem is the way pair is interpretted by `traverseU`. If I manually combined `f` and `g`, it would look like:
+Running `f` and `g` is working fine. The problem is the way pair is interpreted by `traverseU`. If I manually combined `f` and `g`, it would look like:
 
 ```scala
 scala> val h = { (x: Int) => (f(x), g(x)) }
@@ -195,9 +195,9 @@ Let's rewrite word count example from the EIP.
 
 ```scala
 scala> val text = "the cat in the hat\n sat on the mat\n".toList
-text: List[Char] = 
-List(t, h, e,  , c, a, t,  , i, n,  , t, h, e,  , h, a, t, 
-,  , s, a, t,  , o, n,  , t, h, e,  , m, a, t, 
+text: List[Char] =
+List(t, h, e,  , c, a, t,  , i, n,  , t, h, e,  , h, a, t,
+,  , s, a, t,  , o, n,  , t, h, e,  , m, a, t,
 )
 
 scala> def count[A] = (a: A) => 1

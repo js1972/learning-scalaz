@@ -1,4 +1,4 @@
-[builder]: http://eed3si9n.com/learning-scalaz/Applicative+Builder.html
+[builder]: $linkBase$/learning-scalaz/Applicative+Builder.html
 ### Applicative
 
 LYAHFGG:
@@ -26,7 +26,7 @@ res12: List[Int] = List(9, 18, 27, 36)
 
 LYAHFGG:
 
-> Meet the `Applicative` typeclass. It lies in the `Control.Applicative` module and it defines two methods, `pure` and `<*>`. 
+> Meet the `Applicative` typeclass. It lies in the `Control.Applicative` module and it defines two methods, `pure` and `<*>`.
 
 Let's see the contract for Scalaz's `Applicative`:
 
@@ -69,7 +69,7 @@ I can't really express it in words yet, but there's something cool about the fac
 
 LYAHFGG:
 
-> You can think of `<*>` as a sort of a beefed-up `fmap`. Whereas `fmap` takes a function and a functor and applies the function inside the functor value, `<*>` takes a functor that has a function in it and another functor and extracts that function from the first functor and then maps it over the second one. 
+> You can think of `<*>` as a sort of a beefed-up `fmap`. Whereas `fmap` takes a function and a functor and applies the function inside the functor value, `<*>` takes a functor that has a function in it and another functor and extracts that function from the first functor and then maps it over the second one.
 
 ```scala
 trait Apply[F[_]] extends Functor[F] { self =>
@@ -213,7 +213,7 @@ Let's try implementing this in Scalaz!
 ```scala
 scala> def sequenceA[F[_]: Applicative, A](list: List[F[A]]): F[List[A]] = list match {
          case Nil     => (Nil: List[A]).point[F]
-         case x :: xs => (x |@| sequenceA(xs)) {_ :: _} 
+         case x :: xs => (x |@| sequenceA(xs)) {_ :: _}
        }
 sequenceA: [F[_], A](list: List[F[A]])(implicit evidence\$1: scalaz.Applicative[F])F[List[A]]
 ```

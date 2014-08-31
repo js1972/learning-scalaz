@@ -1,3 +1,3 @@
-Source for [learning Scalaz](http://eed3si9n.com/learning-scalaz/).
+My additions to the awesome [learning-scalaz](http://eed3si9n.com/learning-scalaz/) resource. My updates can be seen at [scalaz.jaylin.com.au](scalaz.jaylin.com.au). I've updated the code to work with scalaz 7.1 and fixed up allot of dead links and basic spelling, etc. Also added info on the endo typeclass. Will continue to improve as I learn more...
 
 This website uses [Pamflet](http://pamflet.databinder.net/Pamflet.html) to generate the pages from markdown files.
