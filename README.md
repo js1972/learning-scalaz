@@ -1,3 +1,3 @@
 My additions to the awesome [learning-scalaz](http://eed3si9n.com/learning-scalaz/) resource. My updates can be seen at [scalaz.jaylin.com.au](scalaz.jaylin.com.au). I've updated the code to work with scalaz 7.1 and fixed up allot of dead links and basic spelling, etc. Also added info on the endo typeclass. Will continue to improve as I learn more...
 
-This website uses [Pamflet](http://pamflet.databinder.net/Pamflet.html) to generate the pages from markdown files.
+This website uses [Pamflet](http://pamflet.databinder.net/Pamflet.html) to generate the pages from markdown files. To run locally to test the layout just execute ```pf``` in the directory that contains the doc sources or where the doc sources are an immediate sub-dir. To generate the web source file into a directory execute like this: ```pf source_dir target_dir```.
