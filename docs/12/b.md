@@ -138,7 +138,7 @@ EIP:
 
 > In the case of a monadic applicative functor, traversal specialises to monadic map, and has the same uses.
 
-It does have similar feel to `flatMap`, except now the passed in function returns `G[B]` where `[G: Applicative]` instead of requiring `List`.
+It does have a similar feel to `flatMap`, except now the passed in function returns `G[B]` where `[G: Applicative]` instead of requiring `List`.
 
 EIP:
 
