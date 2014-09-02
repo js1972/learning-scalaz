@@ -90,7 +90,7 @@ scala> def sequenceList[F[_]: Applicative, A](xs: List[F[A]]): F[List[A]] =
          xs.foldRight(List.empty[A].point[F])((a, b) => ^(a, b)(_ :: _))
 
 warning: there were 1 feature warning(s); re-run with -feature for details
-sequenceList: [F[_], A](xs: List[F[A]])(implicit evidence$1: scalaz.Applicative[F])F[List[A]]
+sequenceList: [F[_], A](xs: List[F[A]])(implicit evidence\$1: scalaz.Applicative[F])F[List[A]]
 ```
 
 This works with:
@@ -110,7 +110,7 @@ But what happens if we use something else with a convenient Applicative instance
 ```scala
 sequenceList(List(\/.right(42), \/.left(NonEmptyList("oops"))))
 <console>:23: error: no type parameters for method 
-  sequenceList: (xs: List[F[A]])(implicit evidence$1: scalaz.Applicative[F])F[List[A]]
+  sequenceList: (xs: List[F[A]])(implicit evidence\$1: scalaz.Applicative[F])F[List[A]]
   exist so that it can be applied to arguments
   (List[scalaz.\/[scalaz.NonEmptyList[String],Int]])
  --- because ---
