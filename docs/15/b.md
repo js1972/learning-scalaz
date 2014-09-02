@@ -132,20 +132,20 @@ The problem was that NonEmptyList[String] ```\/``` Int has the shape F[A, B], wh
 
 #### Finding an Unapply instance ####
 
-[Unapply]($scalazBaseUrl$/core/src/main/scala/scalaz/Unapply.scala#L210) __does__ have instances matching the F[A, B] shape: __unapplyMAB1__ and __unapplyMAB2__ in it companion object; so always visible.
+[Unapply]($scalazBaseUrl$/core/src/main/scala/scalaz/Unapply.scala#L210) __does__ have instances matching the F[A, B] shape in it companion object: __unapplyMAB1__ and __unapplyMAB2__.
 
 Lets seee if one of them works.
 
 ```scala
 scala> Unapply.unapplyMAB1[Applicative, \/, NonEmptyList[String], Int]
-<console>:14: error: could not find implicit value for parameter TC0: scalaz.Applicative[[α]scalaz.\/[α,Int]]
+<console>:14: error: could not find implicit value for parameter TC0: scalaz.Applicative[[a]scalaz.\/[a,Int]]
               Unapply.unapplyMAB1[Applicative, \/, NonEmptyList[String], Int]
 
 scala> Unapply.unapplyMAB2[Applicative, \/, NonEmptyList[String], Int]
 res4: scalaz.Unapply[scalaz.Applicative,scalaz.\/[scalaz.NonEmptyList[String],Int]]{type M[X] = scalaz.\/[scalaz.NonEmptyList[String],X]; type A = Int} = scalaz.Unapply_0\$\$anon$13\$53ef560
 ```
 
-Either is right-biased so ```Unapply.unapplyMAB1``` doesn't apply here.
+Either is right-biased so `Unapply.unapplyMAB1` doesn't apply here.
 
 This effectively hides the typelambda inside Unapply.
 Here, the type res4.M represents the typelambda being passed to sequenceList. You can see this work here:
