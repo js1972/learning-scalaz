@@ -86,13 +86,8 @@ import scalaz._
 scala> import Scalaz._
 import Scalaz._
 
-scala> :paste
-// Entering paste mode (ctrl-D to finish)
-
-def sequenceList[F[_]: Applicative, A](xs: List[F[A]]): F[List[A]] =
-    xs.foldRight(List.empty[A].point[F])((a, b) => ^(a, b)(_ :: _))
-
-// Exiting paste mode, now interpreting.
+scala> def sequenceList[F[_]: Applicative, A](xs: List[F[A]]): F[List[A]] =
+         xs.foldRight(List.empty[A].point[F])((a, b) => ^(a, b)(_ :: _))
 
 warning: there were 1 feature warning(s); re-run with -feature for details
 sequenceList: [F[_], A](xs: List[F[A]])(implicit evidence$1: scalaz.Applicative[F])F[List[A]]
@@ -170,14 +165,9 @@ Note that scalaZ provides [sequenceU]($scalazBaseUrl$/core/src/main/scala/scalaz
 
 Now that we have worked out Unapply, we can abstract this sequenceList function so that it works for other types and not just Either (`\/`).
 
-```
-scala> :paste
-// Entering paste mode (ctrl-D to finish)
-
-def sequenceListU[FA](xs: List[FA])(implicit U: Unapply[Applicative, FA]): U.M[List[U.A]] =
-  sequenceList(U.leibniz.subst(xs))(U.TC)
-
-// Exiting paste mode, now interpreting.
+```scala
+scala> def sequenceListU[FA](xs: List[FA])(implicit U: Unapply[Applicative, FA]): U.M[List[U.A]] =
+         sequenceList(U.leibniz.subst(xs))(U.TC)
 
 sequenceListU: [FA](xs: List[FA])(implicit U: scalaz.Unapply[scalaz.Applicative,FA])U.M[List[U.A]]
 
