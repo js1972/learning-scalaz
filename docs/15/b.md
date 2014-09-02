@@ -103,9 +103,9 @@ scala> sequenceList(List(some(1), none))
 res1: Option[List[Int]] = None
 ```
 
-That worked fine... because the type of List[Option[Int]] could be neatly destructured into F and A type params. It has the "shape" F[X].
+That worked fine... because the type of ```List[Option[Int]]``` could be neatly destructured into F and A type params. It has the "shape" F[X].
 
-But what happens if we use something else with a convenient Applicative instance like Either (`\/`):
+But what happens if we use something else with a convenient Applicative instance like Either (```\/```):
 
 ```scala
 sequenceList(List(\/.right(42), \/.left(NonEmptyList("oops"))))
@@ -129,11 +129,11 @@ scala> sequenceList[({type l[A] = NonEmptyList[String] \/ A})#l, Int](List(\/.ri
 res2: scalaz.\/[scalaz.NonEmptyList[String],List[Int]] = -\/(NonEmptyList(oops))
 ```
 
-The problem was that NonEmptyList[String] `\/` Int has the shape F[A, B], whereas it wants F[A].
+The problem was that NonEmptyList[String] ```\/``` Int has the shape F[A, B], whereas it wants F[A].
 
 #### Finding an Unapply instance ####
 
-[Unapply]($scalazBaseUrl$/core/src/main/scala/scalaz/Unapply.scala#L210) __does__ have instances matching the F[A, B] shape: unapplyMAB1 and unapplyMAB2 in it companion object; so always visible.
+[Unapply]($scalazBaseUrl$/core/src/main/scala/scalaz/Unapply.scala#L210) __does__ have instances matching the F[A, B] shape: __unapplyMAB1__ and __unapplyMAB2__ in it companion object; so always visible.
 
 Lets seee if one of them works.
 
@@ -163,7 +163,7 @@ The ```res6: NonEmptyList[String] \/ List[Int]``` conformance test shows that Sc
 
 Note that scalaZ provides [sequenceU]($scalazBaseUrl$/core/src/main/scala/scalaz/Traverse.scala#L108) which takes care of the Unapply for us...
 
-Now that we have worked out Unapply, we can abstract this sequenceList function so that it works for other types and not just Either (`\/`).
+Now that we have worked out Unapply, we can abstract this sequenceList function so that it works for other types and not just Either (```\/```).
 
 ```scala
 scala> def sequenceListU[FA](xs: List[FA])(implicit U: Unapply[Applicative, FA]): U.M[List[U.A]] =
