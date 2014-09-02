@@ -72,6 +72,7 @@ res3: scalaz.Validation[String,scalaz.Tree[Int]] = Failure(boom)
 
 Boom.
 
+
 #### More info on using Unapply ####
 
 See the typelevel.org blog [post](http://typelevel.org/blog/2013/09/11/using-scalaz-Unapply.html) on using scalaz.unapply for some good examples. I've copied in the general gist of it below.
@@ -89,7 +90,7 @@ This works with:
 
 ```scala
 sequenceList(List(some(1), some(2)))            //> res0: Option[List[Int]] = Some(List(1, 2))
-sequenceList(List(some(1),none))                //> res1: Option[List[Int]] = None
+sequenceList(List(some(1), none))               //> res1: Option[List[Int]] = None
 ```
 
 That worked fine... because the type of List[Option[Int]] could be neatly destructured into F and A type params. It has the "shape" F[X].
