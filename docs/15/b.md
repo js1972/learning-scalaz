@@ -142,7 +142,7 @@ scala> Unapply.unapplyMAB1[Applicative, \/, NonEmptyList[String], Int]
               Unapply.unapplyMAB1[Applicative, \/, NonEmptyList[String], Int]
 
 scala> Unapply.unapplyMAB2[Applicative, \/, NonEmptyList[String], Int]
-res4: scalaz.Unapply[scalaz.Applicative,scalaz.\/[scalaz.NonEmptyList[String],Int]]{type M[X] = scalaz.\/[scalaz.NonEmptyList[String],X]; type A = Int} = scalaz.Unapply_0\$\$anon$13@53ef560
+res4: scalaz.Unapply[scalaz.Applicative,scalaz.\/[scalaz.NonEmptyList[String],Int]]{type M[X] = scalaz.\/[scalaz.NonEmptyList[String],X]; type A = Int} = scalaz.Unapply_0\$\$anon$13\$53ef560
 ```
 
 Either is right-biased so ```Unapply.unapplyMAB1``` doesn't apply here.
