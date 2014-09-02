@@ -11,7 +11,7 @@ Gibbons says:
 
 > In this chapter we will look at folds and unfolds as abstractions. In a precise technical sense, folds and unfolds are the natural patterns of computation over recursive datatypes; unfolds generate data structures and folds consume them.
 
-We've covered `foldLeft` in [day 4]($linkBase$/learning-scalaz/day4) using `Foldable`, but what's unfold?
+We've covered `foldLeft` in [day 4](./day4.html) using `Foldable`, but what's unfold?
 
 > The dual of folding is unfolding. The Haskell standard List library deﬁnes the function `unfoldr` for generating lists.
 

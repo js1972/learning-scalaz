@@ -1,4 +1,4 @@
-[builder]: $linkBase$/learning-scalaz/Applicative+Builder.html
+[builder]: ./Applicative+Builder.html
 ### Applicative
 
 LYAHFGG:

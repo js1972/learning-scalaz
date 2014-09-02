@@ -49,7 +49,7 @@ Let's look at this using an external diagram.<br>![surjective external diagram](
 ### Injective and monomorphism
 
 > **Definitions**: An arrow *f* satisfying the property 'for any pair of arrows *x<sub>1</sub>: T => A* and *x<sub>2</sub>: T => A*, if *f ∘ x<sub>1</sub> = f ∘ x<sub>2</sub>* then *x<sub>1</sub> = x<sub>2</sub>*', it is said to be *injective for arrows from T*.
-> 
+>
 > If *f* is injective for arrows from *T* for every *T*, one says that *f* is *injective*, or is a **monomorphism**.
 
 Here's how **injective** would mean in terms of sets: <br>![injective](files/day19-o-injective.png)
@@ -60,11 +60,11 @@ All elements in codomain are mapped only once. We can imagine a third object *T*
 
 > **Definition**: An arrow *f* with this cancellation property 'if *t<sub>1</sub> ∘ f = t<sub>2</sub> ∘ f* then *t<sub>1</sub> = t<sub>2</sub>*' for every T is called an **epimorphism**.
 
-Apparently, this is a generalized form of surjective, but the book doesn't go into detail, so I'll skip over.
+Apparently, this is a generalised form of surjective, but the book doesn't go into detail, so I'll skip over.
 
 ### Idempotent
 
-> **Definition**: An endomorphism *e* is called idempotent if *e ∘ e = e*. 
+> **Definition**: An endomorphism *e* is called idempotent if *e ∘ e = e*.
 
 ### Automorphism
 
