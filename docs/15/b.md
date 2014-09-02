@@ -158,9 +158,9 @@ scala> res6: NonEmptyList[String] \/ List[Int]
 res7: scalaz.\/[scalaz.NonEmptyList[String],List[Int]] = -\/(NonEmptyList(oops))
 ```
 
-The ```res6: NonEmptyList[String] \/ List[Int]``` conformance test shows that Scala can still reduce the path-dependent u.M and u.A types at this level, outside sequenceList.
+The ```res6: NonEmptyList[String] \/ List[Int]``` conformance test shows that Scala can still reduce the path-dependent res4.M and res4.A types at this level, outside sequenceList.
 
-Note that scalaZ provides [sequenceU]($scalazBaseUrl$/core/src/main/scala/scalaz/Traverse.scala#L108) which takes care of the Unapply for us...
+Note that scalaZ provides [sequenceU]($scalazBaseUrl$/core/src/main/scala/scalaz/Traverse.scala) which takes care of the Unapply for us...
 
 Now that we have worked out Unapply, we can abstract this sequenceList function so that it works for other types and not just Either (```\/```).
 
