@@ -80,17 +80,32 @@ See the typelevel.org blog [post](http://typelevel.org/blog/2013/09/11/using-sca
 Lets take a look at Unapply with a simple example to sequence a List.
 
 ```scala
+scala> import scalaz._
+import scalaz._
+
+scala> import Scalaz._
+import Scalaz._
+
+scala> :paste
+// Entering paste mode (ctrl-D to finish)
+
 def sequenceList[F[_]: Applicative, A](xs: List[F[A]]): F[List[A]] =
     xs.foldRight(List.empty[A].point[F])((a, b) => ^(a, b)(_ :: _))
-                                                  //> sequenceList: [F[_], A](xs: List[F[A]])(implicit evidence$2: scalaz.Applicat
-                                                  //| ive[F])F[List[A]]
+
+// Exiting paste mode, now interpreting.
+
+warning: there were 1 feature warning(s); re-run with -feature for details
+sequenceList: [F[_], A](xs: List[F[A]])(implicit evidence$1: scalaz.Applicative[F])F[List[A]]
 ```
 
 This works with:
 
 ```scala
-sequenceList(List(some(1), some(2)))            //> res0: Option[List[Int]] = Some(List(1, 2))
-sequenceList(List(some(1), none))               //> res1: Option[List[Int]] = None
+scala> sequenceList(List(some(1), some(2)))
+res0: Option[List[Int]] = Some(List(1, 2))
+
+scala> sequenceList(List(some(1), none))   
+res1: Option[List[Int]] = None
 ```
 
 That worked fine... because the type of List[Option[Int]] could be neatly destructured into F and A type params. It has the "shape" F[X].
@@ -115,9 +130,8 @@ argument expression's type is not compatible with formal parameter type;
 This is basically saying that you need to use a typelambda: ```({type λ[α] = NonEmptyList[String] \/ α})#λ```
 
 ```scala
-sequenceList[({type l[A] = NonEmptyList[String] \/ A})#l, Int](List(\/.right(42), \/.left(NonEmptyList("oops"))))
-                                                  //> res2: scalaz.\/[scalaz.NonEmptyList[String],List[Int]] = -\/(NonEmptyList(o
-                                                  //| ops))
+scala> sequenceList[({type l[A] = NonEmptyList[String] \/ A})#l, Int](List(\/.right(42), \/.left(NonEmptyList("oops"))))
+res2: scalaz.\/[scalaz.NonEmptyList[String],List[Int]] = -\/(NonEmptyList(oops))
 ```
 
 The problem was that NonEmptyList[String] `\/` Int has the shape F[A, B], whereas it wants F[A].
@@ -129,39 +143,44 @@ The problem was that NonEmptyList[String] `\/` Int has the shape F[A, B], wherea
 Lets seee if one of them works.
 
 ```scala
-//Unapply.unapplyMAB1[Applicative, \/, NonEmptyList[String], Int]   <=== Either is right-biased so this one doesn't apply
-val u = Unapply.unapplyMAB2[Applicative, \/, NonEmptyList[String], Int]
-                                                  //> u  : scalaz.Unapply[scalaz.Applicative,scalaz.\/[scalaz.NonEmptyList[String
-                                                  //| ],Int]]{type M[X] = scalaz.\/[scalaz.NonEmptyList[String],X]; type A = Int}
-                                                  //|  = scalaz.Unapply_0$$anon$13@6bba7d61
+scala> Unapply.unapplyMAB1[Applicative, \/, NonEmptyList[String], Int]
+<console>:14: error: could not find implicit value for parameter TC0: scalaz.Applicative[[α]scalaz.\/[α,Int]]
+              Unapply.unapplyMAB1[Applicative, \/, NonEmptyList[String], Int]
+
+scala> Unapply.unapplyMAB2[Applicative, \/, NonEmptyList[String], Int]
+res4: scalaz.Unapply[scalaz.Applicative,scalaz.\/[scalaz.NonEmptyList[String],Int]]{type M[X] = scalaz.\/[scalaz.NonEmptyList[String],X]; type A = Int} = scalaz.Unapply_0$$anon$13@53ef560
 ```
+
+Either is right-biased so ```Unapply.unapplyMAB1``` doesn't apply here.
 
 This effectively hides the typelambda inside Unapply.
-Here, the type res7.M represents the typelambda being passed to sequenceList. You can see this work here:
+Here, the type res4.M represents the typelambda being passed to sequenceList. You can see this work here:
 
 ```scala
-val l = sequenceList[u.M, u.A](List(\/.right(42), \/.left(NonEmptyList("oops"))))
-                                                  //> l  : scalaz.stuff.unapply.u.M[List[scalaz.stuff.unapply.u.A]] = -\/(NonEmpt
-                                                  //| yList(oops))
+scala> sequenceList[res4.M, res4.A](List(\/.right(42), \/.left(NonEmptyList("oops"))))
+res6: res4.M[List[res4.A]] = -\/(NonEmptyList(oops))
 
-l: NonEmptyList[String] \/ List[Int]              //> res3: scalaz.\/[scalaz.NonEmptyList[String],List[Int]] = -\/(NonEmptyList(o
-                                                  //| ops))
-                                                  
+scala> res6: NonEmptyList[String] \/ List[Int]
+res7: scalaz.\/[scalaz.NonEmptyList[String],List[Int]] = -\/(NonEmptyList(oops))
 ```
 
-The ```l: NonEmptyList[String] \/ List[Int]``` conformance test shows that Scala can still reduce the path-dependent u.M and u.A types at this level, outside sequenceList.
+The ```res6: NonEmptyList[String] \/ List[Int]``` conformance test shows that Scala can still reduce the path-dependent u.M and u.A types at this level, outside sequenceList.
 
 Note that scalaZ provides [sequenceU]($scalazBaseUrl$/core/src/main/scala/scalaz/Traverse.scala#L108) which takes care of the Unapply for us...
 
 Now that we have worked out Unapply, we can abstract this sequenceList function so that it works for other types and not just Either (`\/`).
 
 ```
+scala> :paste
+// Entering paste mode (ctrl-D to finish)
+
 def sequenceListU[FA](xs: List[FA])(implicit U: Unapply[Applicative, FA]): U.M[List[U.A]] =
-  sequenceList(U.leibniz.subst(xs))(U.TC)         //> sequenceListU: [FA](xs: List[FA])(implicit U: scalaz.Unapply[scalaz.Applica
-                                                  //| tive,FA])U.M[List[U.A]]
+  sequenceList(U.leibniz.subst(xs))(U.TC)
 
-sequenceListU(List(\/.right(42), \/.left(NonEmptyList("oops"))))
-                                                  //> res4: scalaz.\/[scalaz.NonEmptyList[String],List[Int]] = -\/(NonEmptyList(o
-                                                  //| ops))
+// Exiting paste mode, now interpreting.
 
+sequenceListU: [FA](xs: List[FA])(implicit U: scalaz.Unapply[scalaz.Applicative,FA])U.M[List[U.A]]
+
+scala> sequenceListU(List(\/.right(42), \/.left(NonEmptyList("oops"))))
+res8: scalaz.\/[scalaz.NonEmptyList[String],List[Int]] = -\/(NonEmptyList(oops))
 ```
