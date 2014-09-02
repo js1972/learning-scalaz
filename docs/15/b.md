@@ -89,7 +89,6 @@ import Scalaz._
 scala> def sequenceList[F[_]: Applicative, A](xs: List[F[A]]): F[List[A]] =
          xs.foldRight(List.empty[A].point[F])((a, b) => ^(a, b)(_ :: _))
 
-warning: there were 1 feature warning(s); re-run with -feature for details
 sequenceList: [F[_], A](xs: List[F[A]])(implicit evidence\$1: scalaz.Applicative[F])F[List[A]]
 ```
 
@@ -143,7 +142,7 @@ scala> Unapply.unapplyMAB1[Applicative, \/, NonEmptyList[String], Int]
               Unapply.unapplyMAB1[Applicative, \/, NonEmptyList[String], Int]
 
 scala> Unapply.unapplyMAB2[Applicative, \/, NonEmptyList[String], Int]
-res4: scalaz.Unapply[scalaz.Applicative,scalaz.\/[scalaz.NonEmptyList[String],Int]]{type M[X] = scalaz.\/[scalaz.NonEmptyList[String],X]; type A = Int} = scalaz.Unapply_0$$anon$13@53ef560
+res4: scalaz.Unapply[scalaz.Applicative,scalaz.\/[scalaz.NonEmptyList[String],Int]]{type M[X] = scalaz.\/[scalaz.NonEmptyList[String],X]; type A = Int} = scalaz.Unapply_0\$\$anon$13@53ef560
 ```
 
 Either is right-biased so ```Unapply.unapplyMAB1``` doesn't apply here.
