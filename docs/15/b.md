@@ -102,9 +102,9 @@ scala> sequenceList(List(some(1), none))
 res1: Option[List[Int]] = None
 ```
 
-That worked fine... because the type of ```List[Option[Int]]``` could be neatly destructured into F and A type params. It has the "shape" F[X].
+That worked fine... because the type of `List[Option[Int]]` could be neatly destructured into F and A type params. It has the "shape" F[X].
 
-But what happens if we use something else with a convenient Applicative instance like Either (```\/```):
+But what happens if we use something else with a convenient Applicative instance like Either (`\/`):
 
 ```scala
 sequenceList(List(\/.right(42), \/.left(NonEmptyList("oops"))))
@@ -158,11 +158,11 @@ scala> res6: NonEmptyList[String] \/ List[Int]
 res7: scalaz.\/[scalaz.NonEmptyList[String],List[Int]] = -\/(NonEmptyList(oops))
 ```
 
-The ```res6: NonEmptyList[String] \/ List[Int]``` conformance test shows that Scala can still reduce the path-dependent res4.M and res4.A types at this level, outside sequenceList.
+The `res6: NonEmptyList[String] \/ List[Int]` conformance test shows that Scala can still reduce the path-dependent res4.M and res4.A types at this level, outside sequenceList.
 
 Note that scalaZ provides [sequenceU]($scalazBaseUrl$/core/src/main/scala/scalaz/Traverse.scala) which takes care of the Unapply for us...
 
-Now that we have worked out Unapply, we can abstract this sequenceList function so that it works for other types and not just Either (```\/```).
+Now that we have worked out Unapply, we can abstract this sequenceList function so that it works for other types and not just Either (`\/`).
 
 ```scala
 scala> def sequenceListU[FA](xs: List[FA])(implicit U: Unapply[Applicative, FA]): U.M[List[U.A]] =
