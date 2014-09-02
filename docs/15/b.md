@@ -142,7 +142,7 @@ scala> Unapply.unapplyMAB1[Applicative, \/, NonEmptyList[String], Int]
               Unapply.unapplyMAB1[Applicative, \/, NonEmptyList[String], Int]
 
 scala> Unapply.unapplyMAB2[Applicative, \/, NonEmptyList[String], Int]
-res4: scalaz.Unapply[scalaz.Applicative,scalaz.\/[scalaz.NonEmptyList[String],Int]]{type M[X] = scalaz.\/[scalaz.NonEmptyList[String],X]; type A = Int} = scalaz.Unapply_0\$\$anon$13\$53ef560
+res4: scalaz.Unapply[scalaz.Applicative,scalaz.\/[scalaz.NonEmptyList[String],Int]]{type M[X] = scalaz.\/[scalaz.NonEmptyList[String],X]; type A = Int} = scalaz.Unapply_0\$\$anon\$13\$53ef560
 ```
 
 Either is right-biased so `Unapply.unapplyMAB1` doesn't apply here.
@@ -158,11 +158,11 @@ scala> res6: NonEmptyList[String] \/ List[Int]
 res7: scalaz.\/[scalaz.NonEmptyList[String],List[Int]] = -\/(NonEmptyList(oops))
 ```
 
-The `res6: NonEmptyList[String] \\/ List[Int]` conformance test shows that Scala can still reduce the path-dependent res4.M and res4.A types at this level, outside sequenceList.
+The `res6: NonEmptyList[String] \/ List[Int]` conformance test shows that Scala can still reduce the path-dependent res4.M and res4.A types at this level, outside sequenceList.
 
 Note that scalaZ provides [sequenceU]($scalazBaseUrl$/core/src/main/scala/scalaz/Traverse.scala) which takes care of the Unapply for us...
 
-Now that we have worked out Unapply, we can abstract this sequenceList function so that it works for other types and not just Either (`\\/`).
+Now that we have worked out Unapply, we can abstract this sequenceList function so that it works for other types and not just Either (`\/`).
 
 ```scala
 scala> def sequenceListU[FA](xs: List[FA])(implicit U: Unapply[Applicative, FA]): U.M[List[U.A]] =
