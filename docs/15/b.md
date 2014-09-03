@@ -73,6 +73,7 @@ res3: scalaz.Validation[String,scalaz.Tree[Int]] = Failure(boom)
 Boom.
 
 
+
 #### More info on using Unapply ####
 
 See the typelevel.org blog [post](http://typelevel.org/blog/2013/09/11/using-scalaz-Unapply.html) on using scalaz.unapply for some good examples. I've copied in the general gist of it below.
@@ -128,7 +129,8 @@ scala> sequenceList[({type l[A] = NonEmptyList[String] \/ A})#l, Int](List(\/.ri
 res2: scalaz.\/[scalaz.NonEmptyList[String],List[Int]] = -\/(NonEmptyList(oops))
 ```
 
-The problem was that NonEmptyList[String] ```\/``` Int has the shape F[A, B], whereas it wants F[A].
+The problem was that ```NonEmptyList[String] \/ Int``` has the shape F[A, B], whereas it wants F[A].
+
 
 #### Finding an Unapply instance ####
 
@@ -138,7 +140,7 @@ Lets seee if one of them works.
 
 ```scala
 scala> Unapply.unapplyMAB1[Applicative, \/, NonEmptyList[String], Int]
-<console>:14: error: could not find implicit value for parameter TC0: scalaz.Applicative[[a]scalaz.\/[a,Int]]
+<console>:14: error: could not find implicit value for parameter TC0: scalaz.Applicative[[α]scalaz.\/[α,Int]]
               Unapply.unapplyMAB1[Applicative, \/, NonEmptyList[String], Int]
 
 scala> Unapply.unapplyMAB2[Applicative, \/, NonEmptyList[String], Int]
@@ -158,7 +160,7 @@ scala> res6: NonEmptyList[String] \/ List[Int]
 res7: scalaz.\/[scalaz.NonEmptyList[String],List[Int]] = -\/(NonEmptyList(oops))
 ```
 
-The `res6: NonEmptyList[String] \/ List[Int]` conformance test shows that Scala can still reduce the path-dependent res4.M and res4.A types at this level, outside sequenceList.
+The ```res6: NonEmptyList[String] \/ List[Int]``` conformance test shows that Scala can still reduce the path-dependent res4.M and res4.A types at this level, outside sequenceList.
 
 Note that scalaZ provides [sequenceU]($scalazBaseUrl$/core/src/main/scala/scalaz/Traverse.scala) which takes care of the Unapply for us...
 
